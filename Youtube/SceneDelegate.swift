@@ -8,16 +8,44 @@
 
 import UIKit
 
+class CustomNavigationController: UINavigationController {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        let window = UIWindow(windowScene: windowScene)
+        
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        
+        let layout = UICollectionViewFlowLayout()
+        window.rootViewController = CustomNavigationController(rootViewController: HomeController(collectionViewLayout: layout))
+        
+        UINavigationBar.appearance().barTintColor =
+            UIColor.rgb(red: 230, green: 32, blue: 31)
+        
+        
+        window.makeKeyAndVisible()
+        self.window = window
+
+        
+        let statusBarBackgroundView = UIView()
+        statusBarBackgroundView.backgroundColor = UIColor.rgb(red: 194, green: 31, blue: 31)
+        
+        window.addSubview(statusBarBackgroundView)
+        window.addConstraintsWithFormat("H:|[v0]|", views: statusBarBackgroundView)
+        //let height = application.statusBarFrame.height
+        //window.addConstraintsWithFormat("V:|[v0(\(height))]", views: statusBarBackgroundView)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
